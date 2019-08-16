@@ -21,6 +21,10 @@ GameCenter.prototype.getPlayerImage = function (success, failure) {
     exec(success, failure, "GameCenter", "getPlayerImage", []);
 };
 
+GameCenter.prototype.getPlayerScore = function (success, failure, data) {
+    exec(success, failure, "GameCenter", "getPlayerScore", [data]);
+};
+
 GameCenter.prototype.submitScore = function (success, failure, data) {
     exec(success, failure, "GameCenter", "submitScore", [data]);
 };

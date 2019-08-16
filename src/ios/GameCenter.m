@@ -132,6 +132,33 @@
     }
 }
 
+- (void) getPlayerScore:(CDVInvokedUrlCommand*)command
+{
+    __block CDVPluginResult* pluginResult = nil;
+    NSMutableDictionary *args = [command.arguments objectAtIndex:0];
+    NSString *leaderboardId = [args objectForKey:@"leaderboardId"];
+    
+    GKLeaderboard *leaderboardRequest = [[GKLeaderboard alloc] init];
+    leaderboardRequest.identifier = leaderboardId;
+    
+    [leaderboardRequest loadScoresWithCompletionHandler:^(NSArray *scores, NSError *error) {
+        if (error) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        } else if (scores) {
+            GKScore *localPlayerScore = leaderboardRequest.localPlayerScore;
+            
+            NSDictionary* userScore = @{
+                                        @"score": [NSNumber numberWithLongLong:localPlayerScore.value]
+                                        };
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:userScore];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        }
+        
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
 - (void) submitScore:(CDVInvokedUrlCommand*)command;
 {
     NSMutableDictionary *args = [command.arguments objectAtIndex:0];
