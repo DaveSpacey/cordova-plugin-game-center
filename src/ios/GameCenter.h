@@ -12,6 +12,7 @@
 
 - (void) auth:(CDVInvokedUrlCommand*)command;
 - (void) checkAuth:(CDVInvokedUrlCommand*)command;
+- (void) generateSignature:(CDVInvokedUrlCommand*)command;
 - (void) getPlayerImage:(CDVInvokedUrlCommand*)command;
 - (void) submitScore:(CDVInvokedUrlCommand*)command;
 - (void) showLeaderboard:(CDVInvokedUrlCommand*)command;

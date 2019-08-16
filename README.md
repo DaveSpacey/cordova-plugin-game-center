@@ -136,6 +136,7 @@ gamecenter.getAchievements(successCallback, failureCallback);
 ## Credits
 
 Added checkAuth - jerejigga (https://github.com/jerejigga/cordova-plugin-game-center)
+Added generateSignature - gkorshunov (https://github.com/kipelovets/cordova-plugin-game-center)
 
 ## Platforms
 

@@ -63,6 +63,38 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void) generateSignature:(CDVInvokedUrlCommand*)command;
+{
+    [self.commandDelegate runInBackground:^{
+
+        __weak GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+
+        [localPlayer generateIdentityVerificationSignatureWithCompletionHandler:^(NSURL* publicKeyUrl, NSData* signature, NSData* salt, uint64_t timestamp, NSError* error) {
+
+            CDVPluginResult* pluginResult = nil;
+            if (error) {
+                NSLog(@"GameCenter: generateSignature error: %@", error);
+
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
+            } else {
+                NSDictionary *params = @{@"publicKeyUrl": publicKeyUrl.absoluteString,
+                                         @"timestamp": [NSString stringWithFormat:@"%llu", timestamp],
+                                         @"signature": [signature base64EncodedStringWithOptions:0],
+                                         @"salt": [salt base64EncodedStringWithOptions:0],
+                                         @"playerID": localPlayer.playerID,
+                                         @"bundleID": [[NSBundle mainBundle] bundleIdentifier]};
+
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:params];
+            }
+
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+        }];
+
+
+    }];
+}
+
 - (void) getPlayerImage:(CDVInvokedUrlCommand*)command;
 {
     __weak GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
