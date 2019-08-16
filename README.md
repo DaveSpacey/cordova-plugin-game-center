@@ -133,6 +133,10 @@ gamecenter.getAchievements(successCallback, failureCallback);
 
 ```
 
+## Credits
+
+Added checkAuth - jerejigga (https://github.com/jerejigga/cordova-plugin-game-center)
+
 ## Platforms
 
 Supports iOS 7 and iOS 8 (may have limited iOS 6 support). The Game Center is Apple specific and not applicable to other platforms.

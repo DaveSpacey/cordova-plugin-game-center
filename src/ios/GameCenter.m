@@ -47,6 +47,22 @@
     }];
 }
 
+- (void) checkAuth:(CDVInvokedUrlCommand*)command;
+{
+    // __weak to avoid retain cycle
+    __weak GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+
+    CDVPluginResult* pluginResult = nil;
+    if (localPlayer.isAuthenticated) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    }
+    else
+    {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+    }
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void) getPlayerImage:(CDVInvokedUrlCommand*)command;
 {
     __weak GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
